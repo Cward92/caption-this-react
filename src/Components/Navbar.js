@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link, useHistory } from 'react-router-dom';
 import AppContext from './Helper/AppContext';
 
 function NavBar() {
 
-    const { pages, token, logout } = useContext(AppContext);
+    const { pages, token, userId, logout } = useContext(AppContext);
     const { pathname } = useLocation();
 
     return (
@@ -18,13 +18,16 @@ function NavBar() {
                     <ul className="navbar-nav ml-auto">
                         {
                             pages.filter((item, index) => {
+                                if (item.url == '/') {
+                                    return item;
+                                }
                                 if (token.length > 0) {
-                                    if (item.url !== '/login') {
+                                    if (item.user) {
                                         return item;
                                     }
                                 }
                                 else {
-                                    if (item.url !== '/logout') {
+                                    if (!item.user) {
                                         return item;
                                     }
                                 }
@@ -32,7 +35,13 @@ function NavBar() {
                                 return (
                                     <li key={index} className="nav-item">
                                         { item.url === '/logout' ?
-                                            <a href='#' className="nav-link" onClick={logout}>Logout</a> :
+                                            <a href='#' className="nav-link" onClick={logout}>Logout</a> : 
+                                            item.url === '/profile/{id}' ? 
+                                            <Link
+                                                to={`/profile/${userId}`}
+                                                className={"nav-link " + (pathname === item.url ? "active" : "")}>
+                                                {item.name}
+                                            </Link> : 
                                             <Link
                                                 to={item.url}
                                                 className={"nav-link " + (pathname === item.url ? "active" : "")}>

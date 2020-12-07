@@ -8,7 +8,7 @@ export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const { setToken } = useContext(AppContext);
+    const { setToken, setUserId } = useContext(AppContext);
 
     let history = useHistory();
 
@@ -17,7 +17,7 @@ export default function Login() {
         sessionStorage.setItem('token', res.data.access_token);
         setToken(res.data.access_token);
     }
-    
+
     const clickHandler = () => {
         const data = {
             username: email,

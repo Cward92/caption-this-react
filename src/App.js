@@ -3,7 +3,8 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
+  useHistory
 } from "react-router-dom";
 
 import { AppProvider } from "./Components/Helper/AppContext";
@@ -14,27 +15,33 @@ import Home from './Components/Home';
 import Login from './Components/Login';
 import Register from './Components/Register';
 import UserHello from './Components/UserHello';
+import Profile from './Components/Profile';
 import Axios from "axios";
 
 
-function App() {
+function Helper() {
 
   const pages = [
     { name: 'Home', url: '/' },
     { name: 'Login', url: '/login' },
-    { name: 'Logout', url: '/logout' },
-    { name: 'User Hello', url: '/userhello'}
+    { name: 'Logout', url: '/logout', user: true },
+    { name: 'User Hello', url: '/userhello', user: true },
+    { name: 'Profile', url: '/profile/{id}', user: true }
   ]
 
   const [token, setToken] = useState('');
+  const [userId, setUserId] = useState(0);
+
+  let history = useHistory();
 
   const logoutHelper = () => {
     sessionStorage.clear();
     setToken('');
+    history.push('/');
   }
 
   const logout = () => {
-    AxiosHelper({ method: 'post', route: '/logout', fun: logoutHelper, token })
+    AxiosHelper({ method: 'post', route: '/logout', fun: logoutHelper, token });
   }
 
   useEffect(() => {
@@ -42,35 +49,53 @@ function App() {
     if (sessionToken) {
       setToken(sessionToken);
     }
-  }, [])
+  }, []);
+
+  const getUserId = (res) => {
+    setUserId(res.data.id);
+    console.log(res);
+  }
+
+  useEffect(() => {
+    if (token) {
+      AxiosHelper({ method: 'get', route: '/api/user', fun: getUserId, token })
+    }
+  }, [token]);
 
   return (
-    <Router>
-      <AppProvider value={{ token, setToken, pages, logout }}>
-        <div className="container">
-          <Navbar />
-          <div className="my-5">
-            <div className="col-7">
-              <Switch>
-                <Route exact path="/">
-                  <Home />
-                </Route>
-                <Route path="/login">
-                  <Login />
-                </Route>
-                <Route path="/register">
-                  <Register />
-                </Route>
-                <Route path="/userhello">
-                  <UserHello />
-                </Route>
-              </Switch>
-            </div>
+    <AppProvider value={{ token, setToken, userId, setUserId, pages, logout }}>
+      <div className="container">
+        <Navbar />
+        <div className="my-5">
+          <div className="col-7">
+            <Switch>
+              <Route exact path="/">
+                <Home />
+              </Route>
+              <Route path="/login">
+                <Login />
+              </Route>
+              <Route path="/register">
+                <Register />
+              </Route>
+              <Route path="/userhello">
+                <UserHello />
+              </Route>
+              <Route path="/profile/:id">
+                <Profile />
+              </Route>
+            </Switch>
           </div>
         </div>
-      </AppProvider>
-    </Router>
+      </div>
+    </AppProvider>
   );
 }
 
-export default App;
+export default function App() {
+  return (
+    <Router >
+      <Helper />
+    </Router>
+  );
+}

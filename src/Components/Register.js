@@ -8,11 +8,12 @@ export default function Register() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const { setToken } = useContext(AppContext);
+    const { setToken, setUserId } = useContext(AppContext);
 
     const registerHelper = (res) => {
         sessionStorage.setItem('token', res.data.data.token);
         setToken(res.data.data.token);
+        console.log(res);
     }
 
     const clickHandler = () => {
