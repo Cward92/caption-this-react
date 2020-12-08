@@ -8,7 +8,7 @@ export default function Register() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const { setToken, setUserId } = useContext(AppContext);
+    const { setToken } = useContext(AppContext);
 
     const registerHelper = (res) => {
         sessionStorage.setItem('token', res.data.data.token);

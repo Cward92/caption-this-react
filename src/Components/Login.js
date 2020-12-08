@@ -23,13 +23,13 @@ export default function Login() {
             username: email,
             password,
             client_id: '2',
-            client_secret: '4FW0XhKYD5SEMTN6VPMBYW7bFoxy0MOrZSibaIiM',
+            client_secret: 'hsI3HjDbMBOqVQPlgCk937oS9xFQ8znATaOgjJci',
             grant_type: 'password',
             scope: ''
         };
 
 
-        AxiosHelper({ method: 'post', route: '/v1/oauth/token', fun: loginHelper, data })
+        AxiosHelper({ method: 'post', route: '/v1/oauth/token', fun: loginHelper, data });
 
         history.push('/');
 

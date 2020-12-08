@@ -5,7 +5,7 @@ import AppContext from '../Components/Helper/AppContext';
 
 export default function Profile() {
 
-    const { token } = useContext(AppContext);
+    const { token, userData } = useContext(AppContext);
 
     let { id } = useParams();
 
@@ -21,7 +21,7 @@ export default function Profile() {
         <div class="row mt-5">
             <div class="col-12">
                 <div class="card" style={{ marginTop: '1em', width: "18rem" }}>
-                    <img class="card-img-top" src="..." alt="Card image cap"></img>
+                    <img class="card-img-top" src="https://lorempixel.com/640/480/?86926" alt="Card image cap"></img>
                     <div class="card-body">
                         <h4 class="card-text">Name</h4>
                         <form action="buttonFunctions.php" method="post">

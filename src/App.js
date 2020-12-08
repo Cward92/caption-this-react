@@ -30,7 +30,7 @@ function Helper() {
   ]
 
   const [token, setToken] = useState('');
-  const [userId, setUserId] = useState(0);
+  const [userData, setUserData] = useState({});
 
   let history = useHistory();
 
@@ -51,11 +51,11 @@ function Helper() {
     }
   }, []);
 
-  const getUserId = (res) => {
-    setUserId(res.data.id);
-    console.log(res);
+  const getUserData = (res) => {
+    setUserData(res.data);
   }
 
+  //checks for token and returns current user data
   useEffect(() => {
     if (token) {
       AxiosHelper({ method: 'get', route: '/api/user', fun: getUserId, token })
@@ -63,7 +63,7 @@ function Helper() {
   }, [token]);
 
   return (
-    <AppProvider value={{ token, setToken, userId, setUserId, pages, logout }}>
+    <AppProvider value={{ token, setToken, userData, pages, logout }}>
       <div className="container">
         <Navbar />
         <div className="my-5">
