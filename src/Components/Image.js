@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useHistory, Link, useParams } from 'react-router-dom';
 import AxiosHelper from '../Components/Helper/AxiosHelper';
 import AppContext from '../Components/Helper/AppContext';
+import { get } from 'jquery';
 
 export default function Image() {
 
@@ -12,18 +13,25 @@ export default function Image() {
 
     const [image, setImage] = useState('');
     const [caption, setCaption] = useState('');
+    const [captions, setCaptions] = useState([]);
 
     const imageHelper = (res) => {
-        return setImage(res.data);
+        setImage(res.data);
     }
+
 
     useEffect(() => {
         AxiosHelper({ method: 'get', route: `/images/${id}`, fun: imageHelper });
     }, []);
 
-    const funnyFun = () => {
-        console.log('stink');
+    const captionHelper = (res) => {
+        setCaptions(res.data);
+        setCaption('');
     }
+
+    useEffect(() => {
+        AxiosHelper({ method: 'get', route: `/captions/${id}`, fun: captionHelper })
+    }, []);
 
     const submitHandler = () => {
         const data = {
@@ -31,8 +39,14 @@ export default function Image() {
             image_id: parseInt(id),
             text: caption,
         }
-        console.log(data);
-        AxiosHelper({ method: 'post', route: `/captions/create`, fun: funnyFun, data, token });
+        AxiosHelper({ method: 'post', route: `/captions/create`, fun: captionHelper, data, token });
+    }
+
+    const likeHandler = (caption_id) => {
+        const data = {
+            image_id: parseInt(id),
+        }
+        AxiosHelper({ method: 'put', route: `/captions/${caption_id}/update`, fun: captionHelper, data, token})
     }
 
     return (
@@ -44,12 +58,30 @@ export default function Image() {
                     </div>
                 </div>
             </div>
-                <div class="form-row text-center">
+            <div class="form-row text-center">
                 <div class="col-6 offset-3">
                     <input type="text" class="form-control" onChange={e => setCaption(e.target.value)} value={caption} placeholder="Your Caption Here!" />
                     <button type="submit" class="btn btn-primary" onClick={submitHandler}>Submit</button>
                 </div>
             </div>
+            <hr></hr>
+            {
+                captions.sort((a,b) => b.rating - a.rating).map(x => {
+                    return (
+                        <>
+                            <div className="row">
+                                <div className="col-8 offset-2">
+                                    <h4>{x.text}</h4>
+                                    <p className="text-muted ml-4">- {x.user.name}</p>
+                                    <p>Rating: {x.rating}</p>
+                                    <button type="submit" class="btn btn-success btn-sm" onClick={e => likeHandler(x.id)}>Like</button>
+                                </div>
+                            </div>
+                            <hr></hr>
+                        </>
+                    );
+                })
+            }
         </>
     )
 }

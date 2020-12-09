@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import AxiosHelper from '../Components/Helper/AxiosHelper';
 import AppContext from '../Components/Helper/AppContext';
 
@@ -8,6 +8,12 @@ export default function Profile() {
     const { token, userData } = useContext(AppContext);
 
     let { id } = useParams();
+
+    let history = useHistory();
+
+    const backHelper = () => {
+        history.push('/');
+    }
 
     useEffect(() => {
         const profileHelper = (res) => {
@@ -28,7 +34,7 @@ export default function Profile() {
                         <form action="buttonFunctions.php" method="post">
                             <button class='btn btn-outline-primary' type="submit" name="edit" value="link to edit profile page">Edit</button>
                             <button class='btn btn-outline-danger' type="submit" name="delete" value="link to 'are you sure?' alert + delete route">Delete</button>
-                            <button class='btn btn-outline-success' type="submit" name="back" value="history.pop">Back</button>
+                            <button class='btn btn-outline-success' type="submit" name="back" onClick={backHelper}value=''>Back</button>
                         </form>
                     </div>
                 </div>

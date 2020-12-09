@@ -23,7 +23,7 @@ export default function Login() {
             username: email,
             password,
             client_id: '2',
-            client_secret: '9mEAAYWiCTbjpLThJ8qe5ZjyrXEzXA42lHCKFLrt',
+            client_secret: '3DT1INrzvmZ3Z6WHXC9rbyXEGPvqEXC84Y7oEW5c',
             grant_type: 'password',
             scope: ''
         };
@@ -42,19 +42,21 @@ export default function Login() {
     // }
 
     return (
-        <>
-            <h1>Login</h1>
-            <div className="form-group">
-                <label htmlFor="email">Email:</label>
-                <input type="email" className="form-control" onChange={e => setEmail(e.target.value)} value={email} aria-describedby="emailHelpId" placeholder="" />
-                <small id="emailHelpId" className="form-text text-muted">Help text</small>
+        <div className="row">
+            <div className="col-6 offset-3 p-4 rounded" style={{ backgroundColor: "#61A5F2" }}>
+                <h1>Login</h1>
+                <div className="form-group">
+                    <label htmlFor="email">Email:</label>
+                    <input type="email" className="form-control" onChange={e => setEmail(e.target.value)} value={email} aria-describedby="emailHelpId" placeholder="" />
+                    <small id="emailHelpId" className="form-text text-muted">Help text</small>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="password">Password:</label>
+                    <input type="password" className="form-control" onChange={e => setPassword(e.target.value)} value={password} placeholder="" />
+                </div>
+                <button className="btn btn-success btn-large" onClick={clickHandler}>Submit</button>
+                <Link className='btn btn-secondary btn-large' to='/register'>Register as a New User</Link>
             </div>
-            <div className="form-group">
-                <label htmlFor="password">Password:</label>
-                <input type="password" className="form-control" onChange={e => setPassword(e.target.value)} value={password} placeholder="" />
-            </div>
-            <button className="btn btn-success btn-large" onClick={clickHandler}>Submit</button>
-            <Link className='btn btn-secondary btn-large' to='/register'>Register as a New User</Link>
-        </>
+        </div>
     )
 }
