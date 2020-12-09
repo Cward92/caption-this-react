@@ -23,7 +23,7 @@ export default function Login() {
             username: email,
             password,
             client_id: '2',
-            client_secret: 'd4bchimyF7Xi4TP5BcTZ1vCdSicpfNO4gMQnVhom',
+            client_secret: '9mEAAYWiCTbjpLThJ8qe5ZjyrXEzXA42lHCKFLrt',
             grant_type: 'password',
             scope: ''
         };

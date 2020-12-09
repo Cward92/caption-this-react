@@ -21,14 +21,18 @@ export default function Image() {
         AxiosHelper({ method: 'get', route: `/images/${id}`, fun: imageHelper });
     }, []);
 
+    const funnyFun = () => {
+        console.log('stink');
+    }
+
     const submitHandler = () => {
         const data = {
             user_id: userData.id,
-            image_id: id,
-            caption: caption,
+            image_id: parseInt(id),
+            text: caption,
         }
         console.log(data);
-        AxiosHelper({ method: 'post', route: `/images/store`, data, token });
+        AxiosHelper({ method: 'post', route: `/captions/create`, fun: funnyFun, data, token });
     }
 
     return (
@@ -36,18 +40,16 @@ export default function Image() {
             <div className="row">
                 <div className="col">
                     <div class="text-center">
-                        <img src={image.src} class="rounded" alt="..." />
+                        <img src={image.src} class="rounded  p-4" style={{ backgroundColor: "#61A5F2" }} alt="..." />
                     </div>
                 </div>
             </div>
-            <form onSubmit={submitHandler}>
                 <div class="form-row text-center">
-                    <div class="col-6 offset-3">
-                        <input type="text" class="form-control" onChange={e => setCaption(e.target.value)} value={caption} placeholder="Your Caption Here!" />
-                        <button type="submit" class="btn btn-primary" >Submit</button>
-                    </div>
+                <div class="col-6 offset-3">
+                    <input type="text" class="form-control" onChange={e => setCaption(e.target.value)} value={caption} placeholder="Your Caption Here!" />
+                    <button type="submit" class="btn btn-primary" onClick={submitHandler}>Submit</button>
                 </div>
-            </form>
+            </div>
         </>
     )
 }

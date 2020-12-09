@@ -19,11 +19,11 @@ export default function Home() {
     }
     
     useEffect(() => {
-        if (images) {
+        if (images.length <= 0) {
             console.log('working');
             AxiosHelper({ method: 'get', route: '/images', fun: imageHelper })
         }
-    }, []);
+    }, [images.length]);
 
     return (
         <>
