@@ -6,7 +6,7 @@ import AppContext from '../Components/Helper/AppContext';
 
 export default function Image() {
 
-    const { userData } = useContext(AppContext);
+    const { token, userData } = useContext(AppContext);
 
     let { id } = useParams();
 
@@ -21,13 +21,14 @@ export default function Image() {
         AxiosHelper({ method: 'get', route: `/images/${id}`, fun: imageHelper });
     }, []);
 
-    const clickHandler = () => {
-        let data = {
+    const submitHandler = () => {
+        const data = {
             user_id: userData.id,
             image_id: id,
             caption: caption,
         }
-        AxiosHelper({ method: 'post', route: `/images/store`, data });
+        console.log(data);
+        AxiosHelper({ method: 'post', route: `/images/store`, data, token });
     }
 
     return (
@@ -39,11 +40,11 @@ export default function Image() {
                     </div>
                 </div>
             </div>
-            <form>
+            <form onSubmit={submitHandler}>
                 <div class="form-row text-center">
                     <div class="col-6 offset-3">
                         <input type="text" class="form-control" onChange={e => setCaption(e.target.value)} value={caption} placeholder="Your Caption Here!" />
-                        <button type="submit" class="btn btn-primary" onClick={clickHandler}>Submit</button>
+                        <button type="submit" class="btn btn-primary" >Submit</button>
                     </div>
                 </div>
             </form>
