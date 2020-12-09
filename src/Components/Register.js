@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import AxiosHelper from '../Components/Helper/AxiosHelper';
 import AppContext from '../Components/Helper/AppContext';
 
@@ -10,15 +10,18 @@ export default function Register() {
 
     const { setToken } = useContext(AppContext);
 
+    let history = useHistory();
+
     const registerHelper = (res) => {
         sessionStorage.setItem('token', res.data.data.token);
         setToken(res.data.data.token);
-        console.log(res);
+        
     }
 
     const clickHandler = () => {
         const data = { name, email, password };
         AxiosHelper({ method: 'post', route: '/register', fun: registerHelper, data })
+        history.push('/');
     }
 
     return (
@@ -40,7 +43,6 @@ export default function Register() {
                 <input type="password" className="form-control" onChange={e => setPassword(e.target.value)} value={password} placeholder="" />
             </div>
             <button className="btn btn-success btn-large" onClick={clickHandler}>Submit</button>
-            <Link to="/login">Login</Link>
         </>
     )
 }

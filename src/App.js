@@ -16,6 +16,7 @@ import Login from './Components/Login';
 import Register from './Components/Register';
 import UserHello from './Components/UserHello';
 import Profile from './Components/Profile';
+import Image from './Components/Image';
 import Axios from "axios";
 
 
@@ -25,18 +26,19 @@ function Helper() {
     { name: 'Home', url: '/' },
     { name: 'Login', url: '/login' },
     { name: 'Logout', url: '/logout', user: true },
-    { name: 'User Hello', url: '/userhello', user: true },
     { name: 'Profile', url: '/profile/{id}', user: true }
   ]
 
   const [token, setToken] = useState('');
   const [userData, setUserData] = useState({});
+  const [images, setImages] = useState([]);
 
   let history = useHistory();
 
   const logoutHelper = () => {
     sessionStorage.clear();
     setToken('');
+    setUserData({});
     history.push('/');
   }
 
@@ -58,35 +60,32 @@ function Helper() {
   //checks for token and returns current user data
   useEffect(() => {
     if (token) {
-      AxiosHelper({ method: 'get', route: '/api/user', fun: getUserId, token })
+      AxiosHelper({ method: 'get', route: '/api/user', fun: getUserData, token })
     }
   }, [token]);
 
   return (
-    <AppProvider value={{ token, setToken, userData, pages, logout }}>
+    <AppProvider value={{ token, setToken, userData, pages, logout, images, setImages }}>
       <div className="container">
         <Navbar />
-        <div className="my-5">
-          <div className="col-7">
-            <Switch>
-              <Route exact path="/">
-                <Home />
-              </Route>
-              <Route path="/login">
-                <Login />
-              </Route>
-              <Route path="/register">
-                <Register />
-              </Route>
-              <Route path="/userhello">
-                <UserHello />
-              </Route>
-              <Route path="/profile/:id">
-                <Profile />
-              </Route>
-            </Switch>
-          </div>
-        </div>
+        <Switch>
+          <Route exact path="/">
+            <Home />
+          </Route>
+          <Route path="/login">
+            <Login />
+          </Route>
+          <Route path="/register">
+            <Register />
+          </Route>
+          <Route path="/userhello">
+            <UserHello />
+          </Route>
+          <Route path="/profile/:id">
+            <Profile />
+          </Route>
+          <Route path="/images/:id" children={<Image />} />
+        </Switch>
       </div>
     </AppProvider>
   );
